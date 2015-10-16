@@ -1,0 +1,60 @@
+<BatchCycle>
+  <Settings>
+    <SMTPServer Address="smtp.gmail.com" Port="587" />
+  </Settings>
+  <Jobs>
+    <JobDefinition Name="Test">
+      <Description>Test batch job</Description>
+      <Commands>
+        <!--<CommandDefinition Type="Data" Description="Retreiving data from SQL database">
+					<SourceDefinition>
+            <SQLQuery Description="SQL Query" DataSource="Data Source=localhost\SQLEXPRESS;Initial Catalog=ComCareReporting;Integrated Security=True" >
+              <SQL>
+                select 
+                  * 
+                from 
+                  Applications
+              </SQL>             
+            </SQLQuery>
+					</SourceDefinition>
+					<DestinationDefinition>
+						<DataTableDefinition Description="SQL Source Data" Name="TestDataTableA"/>
+					</DestinationDefinition>
+				</CommandDefinition>-->
+        <CommandDefinition Type="Data" Description="Testing a custom data source">
+          <SourceDefinition>
+            <CustomProcessor Description="Custom Source" Type="SimpleBatch.Test.TestSource" Assembly="SimpleBatch.Test.dll" />
+          </SourceDefinition>
+          <DestinationDefinition>
+            <InMemoryDataTable Description="Custom Source Data" TableName="TestDataTable"/>
+          </DestinationDefinition>
+        </CommandDefinition>
+        <CommandDefinition Type="Data" Description="Generating CSV file and testing custom destination">
+          <SourceDefinition>
+            <InMemoryDataTable Description="Custom Source Data" TableName="TestDataTable"/>
+          </SourceDefinition>
+          <DestinationDefinition>
+            <DataFile Description="Basic CSV File" FileName="d:\Workspace\test.csv" Format="CommaSeperated" FieldDelimiter="," WithHeaders="true" />
+            <CustomProcessor  Description="Custom Destination" Type="SimpleBatch.Test.TestDestination" Assembly="SimpleBatch.Test.dll" />
+          </DestinationDefinition>
+        </CommandDefinition>
+        <!--<CommandDefinition Type="File" Description="Uploading file to SharePoint document library">
+					<SourceDefinition>
+						<TextFile Description="Test File" FileName="Test.txt"/>
+					</SourceDefinition>
+					<DestinationDefinition>
+						<DocumentLibrary Description="Local SharePoint Document Library" Site="http://localhost/" LibraryName="Reports" Filename="MyNewFile.xls" FileDescription="Some new file"/>
+					</DestinationDefinition>
+				</CommandDefinition>-->
+        <!--<CommandDefinition Type="Text" Description="Job complete, notifying Adrian via email">
+					<SourceDefinition>
+						<TextFile Description="Test File" FileName="JobCompletedEmail.txt"/>
+					</SourceDefinition>
+					<DestinationDefinition>
+            <EmailNotification Description="Job Completion Notification" From="adrian.c.dunne@gmail.com" To="adrian.c.dunne@gmail.com" Subject="Job complete"/>
+					</DestinationDefinition>
+				</CommandDefinition>-->
+      </Commands>
+    </JobDefinition>
+  </Jobs>
+</BatchCycle>
